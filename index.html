@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pokémon Type Effectiveness Chart</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #1e1e1e; color: #f0f0f0; padding: 20px; }
+    .container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    .chart {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: fit-content;
+      max-width: 100%;
+    }
+    .header-row, .type-row {
+  column-gap: 16px;
+  height: 50px;
+  min-height: 50px;
+  align-items: center;
+  margin-bottom: 6px;
+  min-height: 50px;
+  align-items: center;
+  margin-bottom: 6px;
+      display: grid;
+      grid-template-columns: 200px 100px 200px;
+      align-items: center;
+      background: #2e2e2e;
+      padding: 4px 8px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+    .header-row { font-weight: bold; color: #00ffff; }
+    .type-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; font-weight: bold; color: #ffd700; text-align: center; }
+    .icon-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(32px, auto));
+      gap: 8px;
+      justify-content: center;
+      max-width: none;
+    }
+    .icon-group img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #444;
+    }
+    .type-center {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  min-height: 32px;
+      background: #3a3a3a;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 2px;
+      padding: 2px 0;
+    }
+    .type-center img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: none;
+    }
+    .calculator {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px;
+      background: #2e2e2e;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      min-width: 280px;
+    }
+    .calculator input {
+      padding: 8px;
+      background: #3a3a3a;
+      border: 1px solid #555;
+      color: #fff;
+      border-radius: 5px;
+    }
+    .calculator button {
+      background: #444;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .icon-display {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 0;
+    }
+    .icon-display img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #666;
+    }
+#resistance-chart .type-row {
+  column-gap: 16px;
+  display: grid;
+  grid-template-columns: 55px 160px;
+  align-items: center;
+  height: 50px;
+  margin-bottom: 6px;
+  display: grid;
+  grid-template-columns: 100px 200px;
+  align-items: center;
+  height: 50px;
+  margin-bottom: 6px;
+}
+  height: 50px;
+  min-height: 50px;
+  align-items: center;
+  margin-bottom: 6px;
+  min-height: 50px;
+  align-items: center;
+  margin-bottom: 6px;
+  margin-bottom: 6px;
+  display: grid;
+  grid-template-columns: minmax(160px, auto) min-content;
+  gap: 12px;
+}
+  display: grid;
+  grid-template-columns: 200px 80px;
+}
+#resistance-chart .type-row .zero-damage {
+  width: 80px;
+}
+
+.type-row > div:nth-child(1) {
+  justify-content: flex-end;
+}
+.type-row > div:nth-child(2) {
+  justify-content: center;
+}
+.type-row > div:nth-child(3),
+.type-row > div:nth-child(4),
+.type-row > div:nth-child(5) {
+  justify-content: flex-start;
+}
+
+#resistance-chart .header-row > div {
+  text-align: left;
+}
+#resistance-chart .type-row > div {
+  justify-content: flex-start;
+}
+
+#resistance-chart .header-row > div:nth-child(1),
+#resistance-chart .header-row > div:nth-child(2) {
+  text-align: left;
+}
+
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+#resistance-chart .type-row > div:nth-child(1).icon-group {
+  margin-right: 10px;
+}
+}
+
+body {
+}
+
+#resistance-chart .type-row > div:nth-child(1) {
+}
+
+.type-row:first-of-type {
+  height: 40px !important;
+  min-height: 40px !important;
+}
+
+body {
+  transform: scale(0.95);
+  transform-origin: top left;
+}
+
+#resistance-chart .type-row > div:nth-child(2).icon-group {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+#resistance-chart .type-row > div:nth-child(2).icon-group {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+
+#resistance-chart {
+  width: fit-content;
+  max-width: 100%;
+}
+
+  justify-content: flex-start !important;
+}
+
+  margin-left: 6px;  /* aligns with icon gap spacing */
+}
+
+#resistance-chart .type-row > div:nth-child(2) {
+  margin-left: 6px;
+}
+
+#resistance-chart .header-row {
+    display: grid !important;
+    grid-template-columns: 55px auto !important;
+    column-gap: 16px !important;
+    align-items: center !important;
+}
+
+/* Finalized styling for consistent header and label color */
+.header-row {
+  display: grid !important;
+  grid-template-columns: 200px 100px 200px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  padding: 3px 6px !important;
+  align-items: center !important;
+}
+
+.header-row .type-label {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 100% !important;
+}
+
+/* Baby pink instead of lavender */
+.calculator span[style*="lavender"] {
+  color: #ffc0cb !important;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="chart" id="main-chart"></div>
+<div class="chart" id="resistance-chart"></div>
+<div class="calculator" style="margin-left: 20px; flex: 1; background: #2e2e2e; padding: 20px; border-radius: 10px;">
+<h2 style="color: #ffd700;">Pokémon Type Effectiveness Calculator</h2>
+<p><span style="color: lightblue;"><strong>Pokémon 1</strong> type <strong>1</strong>:</span> <input id="calc1t1" placeholder="e.g. Fire"/></p>
+<p><span style="color: lightblue;"><strong>Pokémon 1</strong> type <strong>2</strong>:</span> <input id="calc1t2" placeholder="Optional"/></p>
+<p><span style="color: #ffc0cb;"><strong>Pokémon 2</strong> type <strong>1</strong>:</span> <input id="calc3t1" placeholder="Optional"/></p>
+<p><span style="color: #ffc0cb;"><strong>Pokémon 2</strong> type <strong>2</strong>:</span> <input id="calc3t2" placeholder="Optional"/></p>
+<button onclick="runTypeEffectivenessCalculator1()">Calculate</button>
+<div id="calc-results-1" style="margin-top: 20px;"></div>
+</div><div class="calculator" style="margin-left: 20px; flex: 1; background: #2e2e2e; padding: 20px; border-radius: 10px;">
+<h2 style="color: #ffd700;">Pokémon Type Effectiveness Calculator</h2>
+<p><span style="color: lightblue;"><strong>Pokémon 1</strong> type <strong>1</strong>:</span> <input id="calc2t1" placeholder="e.g. Fire"/></p>
+<p><span style="color: lightblue;"><strong>Pokémon 1</strong> type <strong>2</strong>:</span> <input id="calc2t2" placeholder="Optional"/></p>
+<p><span style="color: #ffc0cb;"><strong>Pokémon 2</strong> type <strong>1</strong>:</span> <input id="calc4t1" placeholder="Optional"/></p>
+<p><span style="color: #ffc0cb;"><strong>Pokémon 2</strong> type <strong>2</strong>:</span> <input id="calc4t2" placeholder="Optional"/></p>
+<button onclick="runTypeEffectivenessCalculator2()">Calculate</button>
+<div id="calc-results-2" style="margin-top: 20px;"></div>
+</div>
+</div>
+<script>
+    const typeChart = {
+      Normal: {weak: ["Fighting"], double: [], zero: ["Ghost"], half: ["Rock", "Steel"]},
+      Fire: {weak: ["Water", "Ground", "Rock"], double: ["Grass", "Ice", "Bug", "Steel"], zero: [], half: ["Fire", "Water", "Rock", "Dragon"]},
+      Water: {weak: ["Electric", "Grass"], double: ["Fire", "Ground", "Rock"], zero: [], half: ["Water", "Grass", "Dragon"]},
+      Electric: {weak: ["Ground"], double: ["Water", "Flying"], zero: ["Ground"], half: ["Electric", "Grass", "Dragon"]},
+      Grass: {weak: ["Fire", "Ice", "Poison", "Flying", "Bug"], double: ["Water", "Ground", "Rock"], zero: [], half: ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"]},
+      Ice: {weak: ["Fire", "Fighting", "Rock", "Steel"], double: ["Grass", "Ground", "Flying", "Dragon"], zero: [], half: ["Fire", "Water", "Ice", "Steel"]},
+      Fighting: {weak: ["Flying", "Psychic", "Fairy"], double: ["Normal", "Ice", "Rock", "Dark", "Steel"], zero: ["Ghost"], half: ["Poison", "Flying", "Psychic", "Bug", "Fairy"]},
+      Poison: {weak: ["Ground", "Psychic"], double: ["Grass", "Fairy"], zero: ["Steel"], half: ["Poison", "Ground", "Rock", "Ghost"]},
+      Ground: {weak: ["Water", "Grass", "Ice"], double: ["Fire", "Electric", "Poison", "Rock", "Steel"], zero: ["Flying"], half: ["Grass", "Bug"]},
+      Flying: {weak: ["Electric", "Ice", "Rock"], double: ["Grass", "Fighting", "Bug"], zero: [], half: ["Electric", "Rock", "Steel"]},
+      Psychic: {weak: ["Bug", "Ghost", "Dark"], double: ["Fighting", "Poison"], zero: ["Dark"], half: ["Psychic", "Steel"]},
+      Bug: {weak: ["Fire", "Flying", "Rock"], double: ["Grass", "Psychic", "Dark"], zero: [], half: ["Fire", "Fighting", "Poison", "Flying", "Ghost", "Steel", "Fairy"]},
+      Rock: {weak: ["Water", "Grass", "Fighting", "Ground", "Steel"], double: ["Fire", "Ice", "Flying", "Bug"], zero: [], half: ["Fighting", "Ground", "Steel"]},
+      Ghost: {weak: ["Ghost", "Dark"], double: ["Ghost", "Psychic"], zero: ["Normal"], half: ["Dark"]},
+      Dragon: {weak: ["Ice", "Dragon", "Fairy"], double: ["Dragon"], zero: ["Fairy"], half: ["Steel"]},
+      Dark: {weak: ["Fighting", "Bug", "Fairy"], double: ["Ghost", "Psychic"], zero: [], half: ["Fighting", "Dark", "Fairy"]},
+      Steel: {weak: ["Fire", "Fighting", "Ground"], double: ["Ice", "Rock", "Fairy"], zero: [], half: ["Fire", "Water", "Electric", "Steel"]},
+      Fairy: {weak: ["Poison", "Steel"], double: ["Fighting", "Dragon", "Dark"], zero: [], half: ["Fire", "Poison", "Steel"]}
+    };
+    const types = Object.keys(typeChart);
+
+    function showIcons(title, list, container) {
+      const section = document.createElement("div");
+      const label = document.createElement("strong");
+      label.textContent = title + ": ";
+      section.appendChild(label);
+      const group = document.createElement("div");
+      group.className = "icon-display";
+      list.forEach(type => {
+        const img = document.createElement("img");
+        img.src = type + "_icon_SwSh.png";
+        img.title = type;
+        group.appendChild(img);
+      });
+      section.appendChild(group);
+      container.appendChild(section);
+    }
+
+    function mergeTypes(typeList) {
+      const res = {weak: new Set(), double: new Set(), zero: new Set(), half: new Set()};
+      typeList.forEach(type => {
+        const d = typeChart[type];
+        if (!d) return;
+        d.weak.forEach(t => res.weak.add(t));
+        d.double.forEach(t => res.double.add(t));
+        d.zero.forEach(t => res.zero.add(t));
+        d.half.forEach(t => res.half.add(t));
+      });
+      return res;
+    }
+
+    function calculateMatchups() {
+      const p1 = ["p1t1", "p1t2"].map(id => document.getElementById(id).value.trim().toLowerCase()).filter(Boolean);
+      const p2 = ["p2t1", "p2t2"].map(id => document.getElementById(id).value.trim().toLowerCase()).filter(Boolean);
+      const div = document.getElementById("results");
+      div.innerHTML = "";
+      [p1, p2].forEach((list, i) => {
+        if (!list.length) return;
+        const cleanList = list.map(t => t.charAt(0).toUpperCase() + t.slice(1));
+        const validTypes = cleanList.filter(t => types.includes(t));
+        if (!validTypes.length) {
+          const error = document.createElement("p");
+          error.textContent = `Invalid type(s): ${list.join(" / ")}`;
+          div.appendChild(error);
+          return;
+        }
+        const merged = mergeTypes(validTypes);
+        const block = document.createElement("div");
+        block.innerHTML = `<h4>${validTypes.join(" / ")}</h4>`;
+        showIcons("Weak to", [...merged.weak], block);
+        showIcons("2× damage to", [...merged.double], block);
+        showIcons("0× damage to", [...merged.zero], block);
+        showIcons("½× damage to", [...merged.half], block);
+        div.appendChild(block);
+      });
+    }
+
+    function calculateReverse() {
+      const t1 = document.getElementById("rev1").value.trim().toLowerCase();
+      const t2 = document.getElementById("rev2").value.trim().toLowerCase();
+      const targets = [t1, t2].filter(Boolean).map(t => t.charAt(0).toUpperCase() + t.slice(1));
+      const div = document.getElementById("reverse-results");
+      div.innerHTML = "";
+      const valid = targets.filter(t => types.includes(t));
+      if (!valid.length) {
+        const error = document.createElement("p");
+        error.textContent = `Invalid target types.`;
+        div.appendChild(error);
+        return;
+      }
+      const effectiveAgainst = types.filter(attacker => valid.some(target => typeChart[attacker]?.double.includes(target)));
+      const weakAgainst = types.filter(attacker => valid.every(target => typeChart[attacker]?.half.includes(target)));
+      showIcons("Weak to", effectiveAgainst, div);
+      showIcons("Strong against", weakAgainst, div);
+    }
+
+    function renderCharts() {
+      const mainChart = document.getElementById("main-chart");
+      const resistChart = document.getElementById("resistance-chart");
+
+      const header1 = document.createElement("div");
+      header1.className = "header-row";
+      header1.innerHTML = "<div class='type-label'>Weak To</div><div class='type-label'>Type</div><div class='type-label'>2× Damage To</div>";
+      mainChart.appendChild(header1);
+
+      const header2 = document.createElement("div");
+      header2.className = "header-row";
+      header2.innerHTML = "<div class='type-label'>0x</div><div class='type-label'>½x</div>";
+      resistChart.appendChild(header2);
+
+      types.forEach(type => {
+        const data = typeChart[type];
+
+        // Main Chart Row
+        const row = document.createElement("div");
+        row.className = "type-row";
+
+        const weakIcons = document.createElement("div");
+        weakIcons.className = "icon-group";
+        data.weak.forEach(t => {
+          const img = document.createElement("img");
+          img.src = `${t}_icon_SwSh.png`;
+          img.title = t;
+          weakIcons.appendChild(img);
+        });
+
+        const center = document.createElement("div");
+        center.className = "type-center";
+        const typeImg = document.createElement("img");
+        typeImg.src = `${type}_icon_SwSh.png`;
+        typeImg.title = type;
+        const label = document.createElement("span");
+        label.className = "type-label";
+        label.textContent = type;
+        center.appendChild(typeImg);
+        center.appendChild(label);
+
+        const doubleIcons = document.createElement("div");
+        doubleIcons.className = "icon-group";
+        data.double.forEach(t => {
+          const img = document.createElement("img");
+          img.src = `${t}_icon_SwSh.png`;
+          img.title = t;
+          doubleIcons.appendChild(img);
+        });
+
+        row.appendChild(weakIcons);
+        row.appendChild(center);
+        row.appendChild(doubleIcons);
+        mainChart.appendChild(row);
+
+        // Resistance Row
+        const resRow = document.createElement("div");
+        resRow.className = "type-row";
+        resRow.style.display = "grid";
+        resRow.style.gridTemplateColumns = "55px auto";
+        resRow.style.columnGap = "16px";
+        resRow.style.alignItems = "center";
+
+        const zeroIcons = document.createElement("div");
+        zeroIcons.className = "icon-group";
+        data.zero.forEach(t => {
+          const img = document.createElement("img");
+          img.src = `${t}_icon_SwSh.png`;
+          img.title = t;
+          zeroIcons.appendChild(img);
+        });
+
+        const halfIcons = document.createElement("div");
+        halfIcons.className = "icon-group";
+        data.half.forEach(t => {
+          const img = document.createElement("img");
+          img.src = `${t}_icon_SwSh.png`;
+          img.title = t;
+          halfIcons.appendChild(img);
+        });
+
+        resRow.appendChild(zeroIcons);
+        resRow.appendChild(halfIcons);
+        resistChart.appendChild(resRow);
+      });
+    }
+
+    renderCharts();
+  
+
+
+
+
+function runTypeEffectivenessCalculator1() {
+    const ids = ["calc1t1", "calc1t2"];
+    const inputTypes = ids.map(id => document.getElementById(id).value.trim().toLowerCase()).filter(Boolean);
+    const formattedTypes = inputTypes.map(t => t.charAt(0).toUpperCase() + t.slice(1));
+    const validTypes = formattedTypes.filter(t => types.includes(t));
+    const resultDiv = document.getElementById("calc-results-1");
+    resultDiv.innerHTML = "";
+
+    if (!validTypes.length) {
+        resultDiv.innerHTML = "<p style='color:red;'>No valid types entered.</p>";
+        return;
+    }
+
+    const merged = mergeTypes(validTypes);
+
+    function displayResult(label, color, icons, addSpacing = true) {
+        if (!icons.length) return;
+        const section = document.createElement("div");
+        if (addSpacing) section.style.marginTop = "16px";
+
+        const header = document.createElement("div");
+        header.style.color = color;
+        header.style.fontWeight = "bold";
+        header.textContent = label;
+        section.appendChild(header);
+
+        const iconRow = document.createElement("div");
+        iconRow.className = "icon-display";
+        icons.forEach(type => {
+            const img = document.createElement("img");
+            img.src = type + "_icon_SwSh.png";
+            img.title = type;
+            iconRow.appendChild(img);
+        });
+
+        section.appendChild(iconRow);
+        resultDiv.appendChild(section);
+    }
+
+    displayResult("Weak against:", "red", [...merged.weak], false);
+    displayResult("Strong against:", "lime", [...merged.double]);
+    displayResult("Deals 1/2 damage against:", "yellow", [...merged.half]);
+    displayResult("Does no damage against:", "lightgray", [...merged.zero]);
+
+    const gif = document.createElement("img");
+    gif.src = "bulbasaur-pokemon.gif";
+    gif.alt = "Bulbasaur cheering";
+    gif.style.marginTop = "20px";
+    gif.style.width = "100px";
+    gif.style.display = "block";
+    gif.style.borderRadius = "10px";
+    resultDiv.appendChild(gif);
+}
+
+
+
+
+function runTypeEffectivenessCalculator2() {
+    const ids = ["calc2t1", "calc2t2"];
+    const inputTypes = ids.map(id => document.getElementById(id).value.trim().toLowerCase()).filter(Boolean);
+    const formattedTypes = inputTypes.map(t => t.charAt(0).toUpperCase() + t.slice(1));
+    const validTypes = formattedTypes.filter(t => types.includes(t));
+    const resultDiv = document.getElementById("calc-results-2");
+    resultDiv.innerHTML = "";
+
+    if (!validTypes.length) {
+        resultDiv.innerHTML = "<p style='color:red;'>No valid types entered.</p>";
+        return;
+    }
+
+    const merged = mergeTypes(validTypes);
+
+    function displayResult(label, color, icons, addSpacing = true) {
+        if (!icons.length) return;
+        const section = document.createElement("div");
+        if (addSpacing) section.style.marginTop = "16px";
+
+        const header = document.createElement("div");
+        header.style.color = color;
+        header.style.fontWeight = "bold";
+        header.textContent = label;
+        section.appendChild(header);
+
+        const iconRow = document.createElement("div");
+        iconRow.className = "icon-display";
+        icons.forEach(type => {
+            const img = document.createElement("img");
+            img.src = type + "_icon_SwSh.png";
+            img.title = type;
+            iconRow.appendChild(img);
+        });
+
+        section.appendChild(iconRow);
+        resultDiv.appendChild(section);
+    }
+
+    displayResult("Weak against:", "red", [...merged.weak], false);
+    displayResult("Strong against:", "lime", [...merged.double]);
+    displayResult("Deals 1/2 damage against:", "yellow", [...merged.half]);
+    displayResult("Does no damage against:", "lightgray", [...merged.zero]);
+
+    const gif = document.createElement("img");
+    gif.src = "wooper-pokemon.gif";
+    gif.alt = "Wooper cheering";
+    gif.style.marginTop = "20px";
+    gif.style.width = "100px";
+    gif.style.display = "block";
+    gif.style.borderRadius = "10px";
+    resultDiv.appendChild(gif);
+}
+
+
+
+
+
+</script>
+</body>
+</html>
